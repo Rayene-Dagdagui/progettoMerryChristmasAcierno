@@ -4,15 +4,138 @@
 
 ```
 src/
-├── index.html          # File HTML principale
-├── main.ts            # Entry point dell'app
-├── styles.css         # Stili globali
+├── index.html                      # File HTML principale
+├── main.ts                         # Entry point dell'app
+├── styles.css                      # Stili globali
 └── app/
-    ├── app.component.ts      # Componente principale (logica)
-    ├── app.component.html    # Template del componente
-    ├── app.component.css     # Stili del componente
-    └── game.service.ts       # Servizio del gioco
+    ├── app.component.ts            # Componente principale (logica)
+    ├── app.component.html          # Template del componente
+    ├── app.component.css           # Stili del componente
+    ├── game.service.ts             # Servizio del gioco
+    ├── game-stats.component.ts     # Componente statistiche 🆕
+    ├── game-stats.component.html   
+    ├── game-stats.component.css
+    ├── game-history.component.ts   # Componente storico 🆕
+    ├── game-history.component.html
+    └── game-history.component.css
 ```
+
+---
+
+## 🎯 I 3 Componenti
+
+### 1️⃣ AppComponent - Il Componente Principale
+
+**Ruolo**: Gestisce la logica principale del gioco
+
+**Proprietà**:
+- `playerScore`, `computerScore` - Punteggi
+- `playerMove`, `computerMove` - Mosse attuali
+- `resultMessage` - Messaggio di risultato
+- `gameHistory: GameRound[]` - Array con la storia dei turni
+
+**Metodi**:
+- `play(choice: string)` - Esegue un turno
+- `reset()` - Ricomincia il gioco
+- `updateResultMessage(result)` - Aggiorna il messaggio
+
+**Import**:
+```typescript
+import { GameHistoryComponent, GameRound } from './game-history.component';
+import { GameStatsComponent } from './game-stats.component';
+
+imports: [CommonModule, GameHistoryComponent, GameStatsComponent]
+```
+
+---
+
+### 2️⃣ GameStatsComponent - Le Statistiche
+
+**Ruolo**: Mostra statistiche del gioco
+
+**@Input Properties**:
+```typescript
+@Input() playerScore: number = 0;
+@Input() computerScore: number = 0;
+```
+- Riceve i punteggi dal componente padre (AppComponent)
+- **@Input**: Significa che questi valori vengono passati da fuori
+
+**Proprietà Calcolate**:
+```typescript
+get totalRounds(): number {
+  return this.playerScore + this.computerScore;
+}
+
+get winPercentage(): number {
+  if (this.totalRounds === 0) return 0;
+  return Math.round((this.playerScore / this.totalRounds) * 100);
+}
+
+get leader(): string {
+  if (this.playerScore > this.computerScore) return 'tu';
+  if (this.computerScore > this.playerScore) return 'computer';
+  return 'pareggio';
+}
+```
+- **getter**: Funzione che calcola valori dinamicamente
+- Si aggiornano automaticamente quando i punteggi cambiano
+
+**Template**:
+```html
+<span class="value">{{ totalRounds }}</span>
+<span class="value">{{ winPercentage }}%</span>
+<span class="value leader" [ngClass]="leader">
+  {{ leader === 'tu' ? '🏆 Tu' : leader === 'computer' ? '🤖 Computer' : '🤝 Pareggio' }}
+</span>
+```
+- `[ngClass]` - Aggiunge classe CSS dinamicamente in base al valore di `leader`
+
+---
+
+### 3️⃣ GameHistoryComponent - Lo Storico
+
+**Ruolo**: Mostra gli ultimi 5 turni
+
+**@Input Property**:
+```typescript
+@Input() rounds: GameRound[] = [];
+```
+- Riceve l'array di turni da AppComponent
+
+**Interface TypeScript** 🆕:
+```typescript
+export interface GameRound {
+  playerChoice: string;      // Emoji della mossa del giocatore
+  computerChoice: string;    // Emoji della mossa del computer
+  result: 'win' | 'lose' | 'draw';  // Risultato del turno
+}
+```
+- **interface**: Un contratto che definisce la forma di un oggetto
+- Garantisce che ogni turno abbia questi 3 campi
+
+**Proprietà**:
+```typescript
+get recentRounds(): GameRound[] {
+  return this.rounds.slice(-5).reverse();
+}
+```
+- **slice(-5)**: Prende gli ultimi 5 elementi
+- **reverse()**: Li inverte (mostri più recenti in cima)
+
+**Template**:
+```html
+<div *ngFor="let round of recentRounds" class="round-item" [ngClass]="round.result">
+  <span class="emoji">{{ round.playerChoice }}</span>
+  <span class="vs">vs</span>
+  <span class="emoji">{{ round.computerChoice }}</span>
+  <span class="badge" [ngClass]="round.result">
+    {{ round.result === 'win' ? '✅' : round.result === 'lose' ? '❌' : '🤝' }}
+  </span>
+</div>
+```
+- ***ngFor**: Ciclo che ripete l'elemento per ogni turno
+- **[ngClass]**: Applica classi CSS diverse per win/lose/draw
 
 ---
 

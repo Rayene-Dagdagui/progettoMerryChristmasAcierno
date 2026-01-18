@@ -1,0 +1,18 @@
+<div class="stats-container">
+  <div class="stat-item">
+    <span class="label">Turni Totali</span>
+    <span class="value">{{ totalRounds }}</span>
+  </div>
+
+  <div class="stat-item">
+    <span class="label">% Vittorie</span>
+    <span class="value">{{ winPercentage }}%</span>
+  </div>
+
+  <div class="stat-item">
+    <span class="label">Leader</span>
+    <span class="value leader" [ngClass]="leader">
+      {{ leader === 'tu' ? '🏆 Tu' : leader === 'computer' ? '🤖 Computer' : '🤝 Pareggio' }}
+    </span>
+  </div>
+</div>

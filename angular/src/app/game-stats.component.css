@@ -1,0 +1,61 @@
+.stats-container {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  flex: 1;
+  min-width: 100px;
+  background-color: #667eea;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.label {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.leader {
+  font-size: 1.5rem;
+}
+
+.leader.tu {
+  color: #90EE90;
+}
+
+.leader.computer {
+  color: #FFB6C1;
+}
+
+.leader.pareggio {
+  color: #FFD700;
+}
+
+@media (max-width: 576px) {
+  .stats-container {
+    gap: 10px;
+  }
+
+  .stat-item {
+    padding: 12px;
+    min-width: 80px;
+  }
+
+  .value {
+    font-size: 1.4rem;
+  }
+}

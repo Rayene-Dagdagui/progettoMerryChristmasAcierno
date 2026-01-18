@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameService } from './game.service';
+import { GameHistoryComponent, GameRound } from './game-history.component';
+import { GameStatsComponent } from './game-stats.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GameHistoryComponent, GameStatsComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -20,6 +22,9 @@ export class AppComponent {
 
   // Variabile per il messaggio di risultato
   resultMessage: string = 'Scegli una mossa!';
+
+  // Array per la storia dei turni
+  gameHistory: GameRound[] = [];
 
   // Costruttore che inietta il servizio del gioco
   constructor(private gameService: GameService) {}
@@ -45,6 +50,13 @@ export class AppComponent {
 
     // Aggiorna il messaggio di risultato
     this.updateResultMessage(result);
+
+    // Aggiungi il turno alla storia
+    this.gameHistory.push({
+      playerChoice: this.playerMove,
+      computerChoice: this.computerMove,
+      result: result as 'win' | 'lose' | 'draw'
+    });
   }
 
   // Funzione per aggiornare il messaggio di risultato
@@ -65,5 +77,6 @@ export class AppComponent {
     this.playerMove = '-';
     this.computerMove = '-';
     this.resultMessage = 'Scegli una mossa!';
+    this.gameHistory = [];
   }
 }

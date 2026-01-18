@@ -1,0 +1,18 @@
+<div class="history-container">
+  <h5>📜 Ultimi Turni</h5>
+  
+  <div *ngIf="recentRounds.length === 0" class="empty-history">
+    <p>Nessun turno ancora!</p>
+  </div>
+
+  <div *ngIf="recentRounds.length > 0" class="rounds-list">
+    <div *ngFor="let round of recentRounds" class="round-item" [ngClass]="round.result">
+      <span class="emoji">{{ round.playerChoice }}</span>
+      <span class="vs">vs</span>
+      <span class="emoji">{{ round.computerChoice }}</span>
+      <span class="badge" [ngClass]="round.result">
+        {{ round.result === 'win' ? '✅' : round.result === 'lose' ? '❌' : '🤝' }}
+      </span>
+    </div>
+  </div>
+</div>
