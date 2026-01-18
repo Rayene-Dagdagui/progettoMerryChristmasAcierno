@@ -1,0 +1,51 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body text-center">
+          <!-- Titolo -->
+          <h1 class="card-title mb-4">🎮 Sasso, Carta, Forbice</h1>
+
+          <!-- Punteggio -->
+          <div class="row mb-4">
+            <div class="col-6">
+              <h5>Tu</h5>
+              <p class="score">{{ playerScore }}</p>
+            </div>
+            <div class="col-6">
+              <h5>Computer</h5>
+              <p class="score">{{ computerScore }}</p>
+            </div>
+          </div>
+
+          <!-- Risultato del turno -->
+          <div class="result-box mb-4">
+            <p>{{ resultMessage }}</p>
+          </div>
+
+          <!-- Scelte del giocatore -->
+          <div class="choices mb-4">
+            <button class="btn btn-choice btn-lg" (click)="play('sasso')">🪨 Sasso</button>
+            <button class="btn btn-choice btn-lg" (click)="play('carta')">📄 Carta</button>
+            <button class="btn btn-choice btn-lg" (click)="play('forbice')">✂️ Forbice</button>
+          </div>
+
+          <!-- Mossa del computer e del giocatore -->
+          <div class="row mb-4">
+            <div class="col-6">
+              <p class="small">La tua mossa:</p>
+              <p class="mossa-display">{{ playerMove }}</p>
+            </div>
+            <div class="col-6">
+              <p class="small">Mossa computer:</p>
+              <p class="mossa-display">{{ computerMove }}</p>
+            </div>
+          </div>
+
+          <!-- Bottone Reset -->
+          <button class="btn btn-danger btn-sm" (click)="reset()">🔄 Ricomincia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
